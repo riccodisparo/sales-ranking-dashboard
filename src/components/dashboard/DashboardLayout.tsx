@@ -1,14 +1,9 @@
-import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Link } from 'react-router-dom';
 import { LogOut, Users, Settings, BarChart } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 
-interface DashboardLayoutProps {
-  children: ReactNode;
-}
-
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+export function DashboardLayout() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -21,6 +16,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
+            {/* LADO ESQUERDO */}
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
                 <BarChart className="h-8 w-8 text-indigo-600" />
@@ -28,23 +24,28 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   Sales Dashboard
                 </span>
               </div>
+
+              {/* LINKS DE NAVEGAÇÃO */}
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <a
-                  href="/dashboard/sellers"
+                <Link
+                  to="/dashboard/sellers"
                   className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                 >
                   <Users className="h-4 w-4 mr-2" />
                   Sellers
-                </a>
-                <a
-                  href="/dashboard/settings"
+                </Link>
+
+                <Link
+                  to="/dashboard/settings"
                   className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
-                </a>
+                </Link>
               </div>
             </div>
+
+            {/* BOTÃO DE LOGOUT */}
             <div className="flex items-center">
               <Button
                 variant="secondary"
@@ -60,7 +61,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</main>
+      {/* CONTEÚDO */}
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <Outlet /> {/* O conteúdo da rota filha vem aqui */}
+      </main>
     </div>
   );
 }
